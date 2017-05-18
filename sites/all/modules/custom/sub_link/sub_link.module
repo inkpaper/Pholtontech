@@ -1,0 +1,22 @@
+<?php
+function sub_link_preprocess_page(&$vars){
+	
+	error_reporting(E_ALL & ~E_NOTICE);
+	//将node对象转化为数组进行取值
+	$node = objectToArray($vars['node']);
+	$node_type = $node['type'];
+	// echo '<pre>';
+	// var_dump($node['menu']);exit();
+	
+	//判断类型是否为产品类型
+	if($node_type == 'product_type' && $node['menu'] == null){
+		$url = 'dynamic-display';
+		drupal_goto($url,array('query' => array('field_products_brand_target_id' => $node['vid'],
+			'title' => $node['title'])));
+	}
+}
+
+//对象转化为数组
+function objectToArray($object){
+	return json_decode(json_encode($object), true);
+}
